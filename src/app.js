@@ -3,12 +3,13 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
+const { NODE_ENV } = require('./config');
 
 // describe app to use express
 const app = express();
 
 // set morgan option based on node environment
-const morganOption = (process.env.NODE_ENV === 'production') ? 'tiny' : 'common';
+const morganOption = (NODE_ENV === 'production') ? 'tiny' : 'common';
 
 // set app options and basic security
 app.use(morgan(morganOption));
@@ -21,7 +22,7 @@ app.get('/', (req, res) => {
 
 app.use(function errorHandler(error, req, res, next) {
   let response;
-  if (process.env.NODE_ENV === 'production') {
+  if (NODE_ENV === 'production') {
     response = { error : {mesage : 'server error'}};
   } else {
     console.error(error);
